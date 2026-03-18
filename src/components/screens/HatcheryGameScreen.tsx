@@ -14,9 +14,9 @@ const DRAGON_NAMES = [
 ];
 
 const DIFFICULTY_COLORS = {
-  easy: 'text-green-400',
-  medium: 'text-yellow-400',
-  hard: 'text-red-400',
+  easy:   'text-emerald-400',
+  medium: 'text-amber-400',
+  hard:   'text-red-400',
 };
 
 type FeedbackState = { text: string; color: string } | null;
@@ -105,7 +105,7 @@ export function HatcheryGameScreen() {
       else if (result.pointsEarned >= 35) msg += ' ⚡ Speed bonus!';
       else if (result.pointsEarned > 20) msg += ' Streak bonus!';
       if (result.newDragon) msg += ' 🐉 New dragon!';
-      setFeedback({ text: msg, color: 'text-green-400' });
+      setFeedback({ text: msg, color: 'text-emerald-400' });
 
       if (result.newDragon) {
         const dragonIdx = result.newDragonIndex;
@@ -191,8 +191,8 @@ export function HatcheryGameScreen() {
             title={unlocked ? `${DRAGON_NAMES[i]} — click to preview` : `Dragon ${i + 1} (locked)`}
             className={`w-full aspect-square rounded-xl flex flex-col items-center justify-center text-xs transition-all relative overflow-hidden ${
               unlocked
-                ? `border-2 cursor-pointer hover:scale-110 active:scale-95 ${isPreviewing ? 'ring-2 ring-white ring-offset-1 ring-offset-gray-900' : ''}`
-                : 'bg-gray-800 border border-gray-700 opacity-40 cursor-not-allowed'
+                ? `border-2 cursor-pointer hover:scale-110 active:scale-95 ${isPreviewing ? 'ring-2 ring-amber-400 ring-offset-1 ring-offset-purple-950' : ''}`
+                : 'bg-purple-950 border border-purple-800/50 opacity-40 cursor-not-allowed'
             }`}
             style={unlocked ? { backgroundColor: info.color, borderColor: info.accentColor } : undefined}
           >
@@ -213,19 +213,19 @@ export function HatcheryGameScreen() {
   );
 
   return (
-    <div className="min-h-screen bg-gray-950 flex items-start justify-center p-3 md:p-4">
+    <div className="min-h-screen bg-gradient-to-b from-purple-950 via-indigo-950 to-gray-950 flex items-start justify-center p-3 md:p-4">
       <div className="flex flex-col md:flex-row gap-4 md:gap-6 w-full max-w-4xl">
 
         {/* LEFT: Phaser canvas — fullscreen overlay when hatching */}
         <div className={
           isHatching
-            ? 'fixed inset-0 z-50 bg-black flex flex-col items-center justify-center gap-6 p-4'
+            ? 'fixed inset-0 z-50 bg-purple-950 flex flex-col items-center justify-center gap-6 p-4'
             : 'flex flex-col items-center gap-2 w-full md:w-auto md:flex-shrink-0 order-2 md:order-1'
         }>
           {isHatching && (
             <div className="text-center">
-              <p className="text-gray-400 text-sm uppercase tracking-widest mb-1">A new dragon hatches</p>
-              <p className="text-yellow-400 text-3xl font-bold">{hatchingName}</p>
+              <p className="text-purple-400 text-sm uppercase tracking-widest mb-1">A new dragon hatches</p>
+              <p className="text-amber-400 text-3xl font-bold">{hatchingName}</p>
             </div>
           )}
           <div className={isHatching ? 'w-[min(90vw,80vh)]' : 'w-full max-w-[400px] md:w-[300px] lg:w-[360px] xl:w-[400px]'}>
@@ -235,16 +235,16 @@ export function HatcheryGameScreen() {
             <div className="flex items-center justify-center gap-2 h-6 w-full max-w-[400px]">
               {previewIdx !== null ? (
                 <>
-                  <span className="text-yellow-300 text-sm font-bold">{DRAGON_NAMES[previewIdx]}</span>
+                  <span className="text-amber-300 text-sm font-bold">{DRAGON_NAMES[previewIdx]}</span>
                   <button
                     onClick={handleClosePreview}
-                    className="text-gray-500 hover:text-white text-xs border border-gray-700 rounded px-2 py-0.5 transition-colors"
+                    className="text-purple-400 hover:text-purple-200 text-xs border border-purple-700 rounded px-2 py-0.5 transition-colors"
                   >
                     ← Back
                   </button>
                 </>
               ) : (
-                <p className="text-gray-400 text-sm font-medium">
+                <p className="text-purple-400 text-sm font-medium">
                   {store.dragonsUnlocked > 0 ? DRAGON_NAMES[store.dragonsUnlocked - 1] : 'Waiting to hatch...'}
                 </p>
               )}
@@ -256,19 +256,21 @@ export function HatcheryGameScreen() {
         <div className="flex flex-col gap-3 flex-1 min-w-0 order-1 md:order-2">
 
           {/* Player info */}
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-white font-bold text-base">{store.playerName}</span>
-            <span className="bg-blue-800 text-blue-200 text-xs font-bold px-2 py-1 rounded-full">Grade {store.grade}</span>
-            <span className={`text-xs font-bold px-2 py-1 rounded-full bg-gray-800 capitalize ${DIFFICULTY_COLORS[store.difficulty]}`}>
+          <div className="flex items-center gap-2 flex-wrap bg-purple-900/40 border border-purple-700/50 rounded-2xl px-4 py-3">
+            <span className="text-purple-100 font-bold text-base">{store.playerName}</span>
+            <span className="bg-purple-800 text-purple-200 text-xs font-bold px-2 py-1 rounded-full border border-purple-600/50">
+              Grade {store.grade}
+            </span>
+            <span className={`text-xs font-bold px-2 py-1 rounded-full bg-purple-800/60 border border-purple-600/50 capitalize ${DIFFICULTY_COLORS[store.difficulty]}`}>
               {store.difficulty}
             </span>
             <div className="ml-auto flex gap-4">
               <div>
-                <span className="text-gray-400 text-xs">Score </span>
-                <span className="text-yellow-400 font-bold">{store.score}</span>
+                <span className="text-purple-400 text-xs">Score </span>
+                <span className="text-amber-400 font-bold">{store.score}</span>
               </div>
               <div>
-                <span className="text-gray-400 text-xs">Streak </span>
+                <span className="text-purple-400 text-xs">Streak </span>
                 <span className="text-orange-400 font-bold">{streakDisplay}</span>
               </div>
             </div>
@@ -276,30 +278,30 @@ export function HatcheryGameScreen() {
 
           {/* Problem panel */}
           {previewIdx === null ? (
-            <div className="bg-gray-900 border border-gray-700 rounded-xl p-4">
+            <div className="bg-purple-900/40 border border-purple-700/50 rounded-2xl p-4">
               <div className="flex items-center justify-between mb-3">
                 {/* Hatch progress dots */}
                 <div className="flex items-center gap-1.5">
-                  <span className="text-gray-400 text-xs">Hatch:</span>
+                  <span className="text-purple-400 text-xs">Hatch:</span>
                   {[0, 1, 2].map(i => (
                     <div
                       key={i}
                       className={`w-3.5 h-3.5 rounded-full border transition-all duration-300 ${
                         i < store.hatchProgress
-                          ? 'bg-orange-500 border-orange-400'
-                          : 'bg-gray-700 border-gray-600'
+                          ? 'bg-amber-500 border-amber-400'
+                          : 'bg-purple-800 border-purple-600'
                       }`}
                     />
                   ))}
-                  <span className="text-gray-500 text-xs ml-1">{store.hatchProgress}/3</span>
+                  <span className="text-purple-500 text-xs ml-1">{store.hatchProgress}/3</span>
                 </div>
-                <div className={`text-sm font-bold ${timeLeft <= 5 ? 'text-red-400 animate-pulse' : 'text-gray-400'}`}>
+                <div className={`text-sm font-bold ${timeLeft <= 5 ? 'text-red-400 animate-pulse' : 'text-purple-400'}`}>
                   ⏱ {timeLeft}s
                 </div>
               </div>
 
               <div className="text-center mb-4">
-                <div className="text-gray-400 text-xs mb-1">Solve:</div>
+                <div className="text-purple-400 text-xs mb-1">Solve:</div>
                 <div className="text-white text-3xl lg:text-4xl font-bold font-mono">
                   {store.currentProblem?.expression ?? '...'} = ?
                 </div>
@@ -315,12 +317,12 @@ export function HatcheryGameScreen() {
                   onKeyDown={e => e.key === 'Enter' && handleSubmit()}
                   disabled={isAnimating}
                   placeholder="Your answer"
-                  className="flex-1 bg-gray-800 border border-gray-600 rounded-lg px-4 py-2.5 text-white text-lg font-mono focus:outline-none focus:border-green-500 disabled:opacity-50"
+                  className="flex-1 bg-purple-950/60 border border-purple-600/40 rounded-xl px-4 py-2.5 text-white text-lg font-mono focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500/50 disabled:opacity-50"
                 />
                 <button
                   onClick={handleSubmit}
                   disabled={isAnimating || !answerInput}
-                  className="bg-green-700 hover:bg-green-600 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold px-5 py-2.5 rounded-lg transition-colors"
+                  className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold px-5 py-2.5 rounded-xl transition-colors"
                 >
                   Go!
                 </button>
@@ -329,8 +331,8 @@ export function HatcheryGameScreen() {
               {/* Numpad — shown on mobile and all tablets, hidden only on wide desktop */}
               <div className={`xl:hidden ${shakeInput ? 'animate-bounce' : ''}`}>
                 {/* Answer display */}
-                <div className={`bg-gray-800 border rounded-lg px-4 py-3 mb-3 text-right font-mono text-2xl font-bold min-h-[52px] transition-colors ${
-                  answerInput ? 'text-white border-green-600' : 'text-gray-500 border-gray-600'
+                <div className={`bg-purple-950/60 border rounded-xl px-4 py-3 mb-3 text-right font-mono text-2xl font-bold min-h-[52px] transition-colors ${
+                  answerInput ? 'text-white border-amber-600/60' : 'text-purple-600 border-purple-600/40'
                 }`}>
                   {answerInput || '—'}
                 </div>
@@ -343,10 +345,10 @@ export function HatcheryGameScreen() {
                       disabled={isAnimating}
                       className={`rounded-xl py-3 md:py-3.5 lg:py-4 text-xl font-bold transition-all active:scale-95 disabled:opacity-40 select-none ${
                         key === '⌫'
-                          ? 'bg-gray-600 hover:bg-gray-500 text-red-300'
+                          ? 'bg-red-900/60 hover:bg-red-800/60 border border-red-700/50 text-red-300'
                           : key === '±'
-                          ? 'bg-gray-600 hover:bg-gray-500 text-blue-300'
-                          : 'bg-gray-700 hover:bg-gray-600 text-white'
+                          ? 'bg-indigo-800/60 hover:bg-indigo-700/60 border border-indigo-600/50 text-indigo-300'
+                          : 'bg-purple-800 hover:bg-purple-700 border border-purple-600/50 text-white'
                       }`}
                     >
                       {key}
@@ -356,7 +358,7 @@ export function HatcheryGameScreen() {
                 <button
                   onPointerDown={e => { e.preventDefault(); handleSubmit(); }}
                   disabled={isAnimating || !answerInput}
-                  className="w-full bg-green-700 hover:bg-green-600 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold text-xl py-3 md:py-3.5 lg:py-4 rounded-xl transition-colors active:scale-95 select-none"
+                  className="w-full bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold text-xl py-3 md:py-3.5 lg:py-4 rounded-xl transition-colors active:scale-95 select-none shadow-lg shadow-amber-900/30"
                 >
                   Go!
                 </button>
@@ -366,14 +368,14 @@ export function HatcheryGameScreen() {
                 <button
                   onClick={handleHint}
                   disabled={isAnimating}
-                  className="text-gray-500 hover:text-yellow-400 text-xs transition-colors disabled:opacity-40 mt-1"
+                  className="text-purple-500 hover:text-amber-400 text-xs transition-colors disabled:opacity-40 mt-1"
                 >
                   Hint (-8 pts)
                 </button>
               )}
 
               {hintText && (
-                <div className="bg-yellow-900/30 border border-yellow-700/40 rounded-lg p-2 text-yellow-300 text-sm mt-2">
+                <div className="bg-amber-900/30 border border-amber-700/40 rounded-xl p-2 text-amber-300 text-sm mt-2">
                   {hintText}
                 </div>
               )}
@@ -385,35 +387,35 @@ export function HatcheryGameScreen() {
               )}
             </div>
           ) : (
-            <div className="bg-gray-900 border border-gray-700 rounded-xl p-4 text-center">
-              <p className="text-gray-400 text-sm">
-                Previewing <span className="text-yellow-300 font-bold">{DRAGON_NAMES[previewIdx]}</span>
+            <div className="bg-purple-900/40 border border-purple-700/50 rounded-2xl p-4 text-center">
+              <p className="text-purple-400 text-sm">
+                Previewing <span className="text-amber-300 font-bold">{DRAGON_NAMES[previewIdx]}</span>
               </p>
-              <button onClick={handleClosePreview} className="mt-2 text-green-400 hover:text-green-300 text-sm underline">
+              <button onClick={handleClosePreview} className="mt-2 text-amber-400 hover:text-amber-300 text-sm underline">
                 ← Back to game
               </button>
             </div>
           )}
 
           {/* Dragons section — collapsible */}
-          <div className="bg-gray-900 border border-gray-700 rounded-xl overflow-hidden">
+          <div className="bg-purple-900/40 border border-purple-700/50 rounded-2xl overflow-hidden">
             {/* Header — always visible, tap to toggle */}
             <button
               onClick={() => setDragonsOpen(o => !o)}
-              className="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-800 transition-colors"
+              className="w-full flex items-center justify-between px-4 py-3 hover:bg-purple-800/30 transition-colors"
             >
               <div className="flex items-center gap-3">
-                <span className="text-gray-300 text-sm font-medium">Dragons</span>
-                <span className="text-green-400 font-bold text-sm">{store.dragonsUnlocked}/20</span>
+                <span className="text-purple-300 text-sm font-medium">🐉 Dragons</span>
+                <span className="text-amber-400 font-bold text-sm">{store.dragonsUnlocked}/20</span>
                 {/* Progress bar inline */}
-                <div className="w-24 bg-gray-700 rounded-full h-1.5 hidden sm:block">
+                <div className="w-24 bg-purple-800 rounded-full h-1.5 hidden sm:block">
                   <div
-                    className="bg-green-500 h-1.5 rounded-full transition-all duration-500"
+                    className="bg-amber-500 h-1.5 rounded-full transition-all duration-500"
                     style={{ width: `${(store.dragonsUnlocked / 20) * 100}%` }}
                   />
                 </div>
               </div>
-              <span className={`text-gray-400 text-xs transition-transform duration-200 ${dragonsOpen ? 'rotate-180' : ''}`}>
+              <span className={`text-purple-400 text-xs transition-transform duration-200 ${dragonsOpen ? 'rotate-180' : ''}`}>
                 ▼
               </span>
             </button>
@@ -421,17 +423,17 @@ export function HatcheryGameScreen() {
             {/* Collapsible grid */}
             {dragonsOpen && (
               <div className="px-4 pb-4">
-                <div className="w-full bg-gray-800 rounded-full h-1.5 mb-3 sm:hidden">
+                <div className="w-full bg-purple-800 rounded-full h-1.5 mb-3 sm:hidden">
                   <div
-                    className="bg-green-500 h-1.5 rounded-full transition-all duration-500"
+                    className="bg-amber-500 h-1.5 rounded-full transition-all duration-500"
                     style={{ width: `${(store.dragonsUnlocked / 20) * 100}%` }}
                   />
                 </div>
                 {dragonGrid}
                 {previewIdx !== null && (
-                  <p className="text-gray-500 text-xs mt-2 text-center">
+                  <p className="text-purple-500 text-xs mt-2 text-center">
                     Previewing {DRAGON_NAMES[previewIdx]} —{' '}
-                    <button onClick={handleClosePreview} className="text-green-400 hover:text-green-300 underline">
+                    <button onClick={handleClosePreview} className="text-amber-400 hover:text-amber-300 underline">
                       back to game
                     </button>
                   </p>
