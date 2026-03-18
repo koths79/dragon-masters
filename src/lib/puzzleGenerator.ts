@@ -16,7 +16,7 @@ const PUZZLE_MAP: Record<Grade, Record<Difficulty, PuzzleCfg>> = {
     // Grade 1: 2 numbers + 1 op, always show 4 (2 distractors), + and - only
     easy:   { numCount: 2, ops: ['+'],       min: 2, max: 12, numRange: [1, 9],  distractors: 2 },
     medium: { numCount: 2, ops: ['+', '-'],  min: 2, max: 15, numRange: [1, 9],  distractors: 2 },
-    hard:   { numCount: 2, ops: ['+', '-'],  min: 3, max: 18, numRange: [2, 12], distractors: 2 },
+    hard:   { numCount: 2, ops: ['+', '-'],  min: 3, max: 18, numRange: [2, 12], distractors: 0 },
   },
   2: {
     easy:   { numCount: 2, ops: ['+', '-'],       min: 3,  max: 25, numRange: [1, 15], distractors: 2 },
@@ -86,8 +86,16 @@ export function generatePuzzle(grade: Grade, difficulty: Difficulty): PuzzleConf
 
     if (isNaN(result) || result < cfg.min || result > cfg.max || !Number.isInteger(result)) continue;
 
-    // Build the solution expression
-    const solution = numbers.map((n, i) => i === 0 ? String(n) : ` ${ops[i - 1]} ${n}`).join('');
+    // Build the solution expression with left-to-right parenthesization
+    // so hint expressions evaluate correctly under standard operator precedence.
+    // 2 numbers: "a op b"  3 numbers: "(a op1 b) op2 c"  4 numbers: "((a op1 b) op2 c) op3 d"
+    let solution = String(numbers[0]);
+    for (let i = 0; i < ops.length; i++) {
+      const rhs = String(numbers[i + 1]);
+      solution = i === 0
+        ? `${solution} ${ops[i]} ${rhs}`
+        : `(${solution}) ${ops[i]} ${rhs}`;
+    }
 
     // Add distractors for easy/medium (always 2 extras; grade 1 always has distractors)
     const shownNumbers = requireAll
