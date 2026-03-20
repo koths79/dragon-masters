@@ -50,7 +50,7 @@ function grade3(qi: number): BattleProblem {
     const b = randInt(2, 10), a = b * randInt(1, 10);
     return { expression: `${a} ÷ ${b}`, answer: a / b };
   }
-  const maxN = lv < 2 ? 100 : 500;
+  const maxN = lv < 2 ? 100 : 200;
   const useAdd = Math.random() < 0.5;
   if (useAdd) {
     const a = randInt(0, maxN), b = randInt(0, maxN - a);
@@ -63,24 +63,34 @@ function grade3(qi: number): BattleProblem {
 function grade4(qi: number): BattleProblem {
   const lv = level(qi);
   const roll = Math.random();
-  if (roll < 0.4) {
+  if (roll < 0.35) {
     const a = randInt(2, lv === 0 ? 9 : 12), b = randInt(2, lv === 0 ? 9 : 12);
     return { expression: `${a} × ${b}`, answer: a * b };
   }
-  if (roll < 0.7) {
+  if (roll < 0.6) {
     const b = randInt(2, lv === 0 ? 9 : 12), a = b * randInt(2, lv === 0 ? 9 : 12);
     return { expression: `${a} ÷ ${b}`, answer: a / b };
   }
-  // simple two-step: a × b + c
-  const a = randInt(2, 6), b = randInt(2, 6), c = randInt(1, 10);
-  return { expression: `${a} × ${b} + ${c}`, answer: a * b + c };
+  if (roll < 0.8) {
+    // simple two-step: a × b + c
+    const a = randInt(2, 6), b = randInt(2, 6), c = randInt(1, 10);
+    return { expression: `${a} × ${b} + ${c}`, answer: a * b + c };
+  }
+  // addition/subtraction with larger numbers
+  const maxN = lv === 0 ? 500 : 999;
+  if (Math.random() < 0.5) {
+    const a = randInt(100, maxN), b = randInt(10, 200);
+    return { expression: `${a} + ${b}`, answer: a + b };
+  }
+  const a = randInt(200, maxN), b = randInt(10, 200);
+  return { expression: `${a} - ${b}`, answer: a - b };
 }
 
 function grade5(qi: number): BattleProblem {
   const lv = level(qi);
   const roll = Math.random();
   if (roll < 0.3) {
-    const a = randInt(10, lv === 0 ? 20 : 50), b = randInt(2, 9);
+    const a = randInt(10, lv === 0 ? 20 : 25), b = randInt(2, 9);
     return { expression: `${a} × ${b}`, answer: a * b };
   }
   if (roll < 0.5) {
