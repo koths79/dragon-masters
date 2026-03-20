@@ -57,7 +57,7 @@ export const useBattleStore = create<BattleStore>()((set, get) => ({
   p1: emptyPlayer('Player 1', 1),
   p2: emptyPlayer('Player 2', 1),
 
-  collectionTimeLeft: 300,
+  collectionTimeLeft: 120,
   currentProblem: null,
   questionIndex: 0,
   feedbackCorrect: null,
@@ -88,7 +88,7 @@ export const useBattleStore = create<BattleStore>()((set, get) => ({
     const grade = player === 1 ? p1.grade : p2.grade;
     set({
       phase,
-      collectionTimeLeft: 300,
+      collectionTimeLeft: 120,
       questionIndex: 0,
       currentProblem: generateBattleProblem(grade, 0),
       feedbackCorrect: null,
@@ -305,7 +305,7 @@ export const useBattleStore = create<BattleStore>()((set, get) => ({
       phase: 'SETUP',
       p1: emptyPlayer('Player 1', 1),
       p2: emptyPlayer('Player 2', 1),
-      collectionTimeLeft: 300,
+      collectionTimeLeft: 120,
       currentProblem: null,
       questionIndex: 0,
       feedbackCorrect: null,
