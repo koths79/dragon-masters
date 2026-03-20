@@ -5,6 +5,8 @@ import { useGameStore } from '../../store/useGameStore';
 const DRAGON_NAMES = [
   'Ember', 'Sparky', 'Blaze', 'Sunny', 'Cinder',
   'Crimson', 'Scarlet', 'Fury', 'Ember Rose', 'Magma',
+  'Frost', 'Steel', 'Shadow', 'Smoke', 'Void',
+  'Aurum', 'Lava King', 'Obsidian', 'Nebula', 'Ancient',
 ];
 
 export function HatcheryVictoryScreen() {
@@ -20,57 +22,52 @@ export function HatcheryVictoryScreen() {
   }, [saveToLeaderboard]);
 
   return (
-    <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center p-6 gap-6">
+    <div className="min-h-screen bg-gradient-to-b from-purple-950 via-indigo-950 to-gray-950 flex flex-col items-center justify-center p-4 md:p-6 gap-6">
       <div className="text-center">
-        <div className="text-6xl mb-3">🎉🐉🎉</div>
-        <h1 className="text-4xl font-bold text-white mb-2">All Dragons Hatched!</h1>
-        <p className="text-green-400 text-xl">
-          {playerName} collected all 10 dragons!
+        <div className="text-6xl md:text-8xl mb-3">🎉🐉🎉</div>
+        <h1 className="text-3xl md:text-5xl font-extrabold text-amber-400 mb-2">All Dragons Hatched!</h1>
+        <p className="text-purple-100 text-base md:text-xl">
+          <span className="text-amber-400 font-bold">{playerName}</span> collected all {dragonsUnlocked} dragons!
         </p>
-        <div className="flex items-center justify-center gap-4 mt-4">
-          <span className="bg-gray-800 text-yellow-400 font-bold text-2xl px-6 py-2 rounded-xl border border-gray-700">
+        <div className="flex items-center justify-center gap-3 mt-4">
+          <span className="bg-purple-900/60 border border-amber-700/50 text-amber-400 font-extrabold text-xl md:text-2xl px-6 py-2 rounded-2xl">
             {score} pts
           </span>
-          <span className="bg-gray-800 text-blue-400 font-bold px-4 py-2 rounded-xl border border-gray-700">
+          <span className="bg-purple-900/60 border border-purple-600/50 text-purple-300 font-bold px-4 py-2 rounded-2xl">
             Grade {grade}
           </span>
         </div>
       </div>
 
-      {/* Dragon collection */}
-      <div className="bg-gray-900 border border-gray-700 rounded-2xl p-6 w-full max-w-2xl">
-        <h2 className="text-white font-semibold text-lg mb-4">Your Dragon Collection</h2>
-        <div className="grid grid-cols-5 gap-3">
+      {/* Dragon collection grid */}
+      <div className="bg-purple-900/40 border border-purple-700/50 rounded-2xl p-4 md:p-6 w-full max-w-2xl">
+        <h2 className="text-purple-100 font-bold text-lg md:text-xl mb-4 text-center">🐉 Your Dragon Collection</h2>
+        <div className="grid grid-cols-4 sm:grid-cols-5 gap-2 md:gap-3">
           {Array.from({ length: dragonsUnlocked }, (_, i) => (
             <div
               key={i}
-              className="bg-gray-800 border border-green-700 rounded-xl p-3 flex flex-col items-center gap-1"
+              className="bg-purple-800/50 border border-purple-600/50 rounded-xl p-2 md:p-3 flex flex-col items-center gap-1"
             >
-              <div className="text-2xl">🐉</div>
-              <div className="text-green-300 text-xs font-medium text-center">{DRAGON_NAMES[i]}</div>
-              <div className="text-gray-500 text-xs">#{i + 1}</div>
+              <div className="text-2xl md:text-3xl">🐉</div>
+              <div className="text-amber-400 text-xs font-bold text-center leading-tight">{DRAGON_NAMES[i]}</div>
+              <div className="text-purple-500 text-xs">#{i + 1}</div>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="flex gap-4">
+      <div className="flex flex-col sm:flex-row gap-3 w-full max-w-md">
         <button
-          onClick={() => {
-            resetGame();
-          }}
-          className="bg-green-700 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-xl transition-colors text-lg"
+          onClick={resetGame}
+          className="flex-1 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white font-bold py-4 rounded-2xl text-lg transition-colors shadow-lg shadow-amber-900/30"
         >
-          Play Again 🥚
+          Hatch Again! 🥚
         </button>
         <button
-          onClick={() => {
-            resetGame();
-            setCurrentGame('SELECT');
-          }}
-          className="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-8 rounded-xl transition-colors text-lg"
+          onClick={() => { resetGame(); setCurrentGame('SELECT'); }}
+          className="flex-1 bg-purple-700 hover:bg-purple-600 text-white font-bold py-4 rounded-2xl text-lg transition-colors"
         >
-          Game Select
+          Main Menu
         </button>
       </div>
     </div>

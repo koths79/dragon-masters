@@ -74,6 +74,7 @@ export const useGameStore = create<GameStore>()(
       move(direction) {
         const { rooms, currentRoomId, grade, difficulty } = get();
         const current = rooms[currentRoomId];
+        if (!current) return;
         const nextId = current.connections[direction];
         if (!nextId) return;
         const next = rooms[nextId];
@@ -230,7 +231,7 @@ export const useGameStore = create<GameStore>()(
     }),
     {
       name: 'dragon-masters',
-      partialize: (state) => ({ leaderboard: state.leaderboard, currentGame: state.currentGame }),
+      partialize: (state) => ({ leaderboard: state.leaderboard }),
     }
   )
 );

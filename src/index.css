@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  html {
+    @apply bg-purple-950;
+  }
+
+  /* Smooth scrolling for all devices */
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Make buttons and inputs kid-friendly size on touch devices */
+  @media (pointer: coarse) {
+    button, input, select {
+      min-height: 48px;
+    }
+  }
+}
