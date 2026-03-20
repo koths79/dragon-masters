@@ -85,7 +85,7 @@ export function BattleScreen() {
     const attacker = currentTurn === 1 ? p1 : p2;
     const power = attacker.selectedDragon?.power ?? 1;
     const msg = action === 'attack'
-      ? `⚔️ Attack! −${power * 3} HP to opponent`
+      ? `⚔️ Attack! −${power} HP to opponent`
       : '❤️ Heal! +5 HP restored';
     setFeedback(msg);
     setAnimating(true);
@@ -164,7 +164,7 @@ export function BattleScreen() {
             >
               ⚔️ Attack<br />
               <span className="text-red-300 text-sm font-normal">
-                -{(currentTurn === 1 ? p1 : p2).selectedDragon?.power ?? 0} × 3 HP
+                -{(currentTurn === 1 ? p1 : p2).selectedDragon?.power ?? 0} HP
               </span>
             </button>
             <button
