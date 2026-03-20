@@ -265,7 +265,7 @@ export const useBattleStore = create<BattleStore>()((set, get) => ({
     let newP2Hp = p2Hp;
 
     if (action === 'attack') {
-      const dmg = attackerPower * 3;
+      const dmg = attackerPower;
       if (currentTurn === 1) {
         newP2Hp = Math.max(0, p2Hp - dmg);
       } else {
