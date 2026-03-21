@@ -26,21 +26,32 @@ const ROOM_BORDER: Record<string, string> = {
   FINAL_VAULT:     '#fde68a', // amber-200
 };
 
-const ROOM_LABEL: Record<string, string> = {
-  ENTRANCE:        '🏰 Start',
-  FLOOR:           '🪨 Chamber',
-  DOOR:            '🔒 Door',
-  TREASURE:        '💎 Treasure',
-  CHARM_FIRE:      '🔥 Fire Shrine',
-  CHARM_ICE:       '❄️ Ice Shrine',
-  CHARM_LIGHTNING: '⚡ Storm Shrine',
-  FINAL_VAULT:     '👑 Final Vault',
+const ROOM_ICON: Record<string, string> = {
+  ENTRANCE:        '🏰',
+  FLOOR:           '🪨',
+  DOOR:            '🔒',
+  TREASURE:        '💎',
+  CHARM_FIRE:      '🔥',
+  CHARM_ICE:       '❄️',
+  CHARM_LIGHTNING: '⚡',
+  FINAL_VAULT:     '👑',
 };
 
-const CELL_W = 96;
-const CELL_H = 52;
-const GAP_X = 36;
-const GAP_Y = 36;
+const ROOM_LABEL: Record<string, string> = {
+  ENTRANCE:        'Start',
+  FLOOR:           'Chamber',
+  DOOR:            'Door',
+  TREASURE:        'Treasure',
+  CHARM_FIRE:      'Fire Shrine',
+  CHARM_ICE:       'Ice Shrine',
+  CHARM_LIGHTNING: 'Storm Shrine',
+  FINAL_VAULT:     'Final Vault',
+};
+
+const CELL_W = 72;
+const CELL_H = 64;
+const GAP_X = 28;
+const GAP_Y = 28;
 
 interface Props {
   highlightedRoomId?: string | null;
@@ -162,10 +173,10 @@ export function MiniMap({ highlightedRoomId, onRoomClick }: Props) {
             const isCurrent = room.id === currentRoomId;
             const isHighlighted = room.id === highlightedRoomId;
             const isAdjacent = adjacentIds.has(room.id);
+            const icon = ROOM_ICON[room.type];
             const label = ROOM_LABEL[room.type];
             const bg = room.visited ? ROOM_BG[room.type] : '#1a0a2e';
             const border = room.visited ? ROOM_BORDER[room.type] : ROOM_BORDER[room.type] + '88';
-
 
             return (
               <div
@@ -189,25 +200,36 @@ export function MiniMap({ highlightedRoomId, onRoomClick }: Props) {
                   flexDirection: 'column',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  padding: '4px 6px',
+                  gap: 2,
+                  padding: '4px',
                   boxSizing: 'border-box',
                 }}
-                title={room.visited ? ROOM_LABEL[room.type] : (isAdjacent ? 'Unexplored room' : 'Unknown')}
+                title={room.visited ? label : (isAdjacent ? 'Unexplored room' : 'Unknown')}
               >
+                {/* Large emoji icon */}
                 <span style={{
-                  fontSize: 11,
-                  fontWeight: isCurrent || isHighlighted ? 700 : 500,
+                  fontSize: room.visited || isCurrent ? 24 : 18,
+                  lineHeight: 1,
+                  userSelect: 'none',
+                  filter: room.visited || isCurrent ? 'none' : 'grayscale(80%)',
+                }}>
+                  {room.visited || isCurrent ? icon : '❓'}
+                </span>
+                {/* Short label below */}
+                <span style={{
+                  fontSize: 9,
+                  fontWeight: isCurrent ? 700 : 500,
                   color: isCurrent ? '#fbbf24' : isHighlighted ? '#c084fc' : room.visited ? '#e9d5ff' : '#6d28d9',
                   textAlign: 'center',
-                  lineHeight: 1.2,
-                  wordBreak: 'break-word',
+                  lineHeight: 1.1,
                   userSelect: 'none',
+                  maxWidth: CELL_W - 8,
+                  overflow: 'hidden',
+                  whiteSpace: 'nowrap',
+                  textOverflow: 'ellipsis',
                 }}>
-                  {label}
+                  {room.visited || isCurrent ? label : (isAdjacent ? '?' : '???')}
                 </span>
-                {isCurrent && (
-                  <span style={{ fontSize: 8, color: '#fbbf24', marginTop: 2 }}>YOU ARE HERE</span>
-                )}
               </div>
             );
           })}
@@ -217,11 +239,12 @@ export function MiniMap({ highlightedRoomId, onRoomClick }: Props) {
 
       {/* Legend */}
       <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-purple-400">
-        <span className="flex items-center gap-1"><span className="w-2 h-2 rounded inline-block border border-green-400" style={{ backgroundColor: '#14532d' }} />Start</span>
-        <span className="flex items-center gap-1"><span className="w-2 h-2 rounded inline-block border border-amber-500" style={{ backgroundColor: '#78350f' }} />Door</span>
-        <span className="flex items-center gap-1"><span className="w-2 h-2 rounded inline-block border border-yellow-400" style={{ backgroundColor: '#713f12' }} />Treasure</span>
-        <span className="flex items-center gap-1"><span className="w-2 h-2 rounded inline-block border border-yellow-200" style={{ backgroundColor: '#78350f' }} />Vault</span>
-        <span className="flex items-center gap-1"><span className="w-2 h-2 rounded inline-block border border-violet-500" style={{ backgroundColor: '#1e1b4b' }} />Chamber</span>
+        <span className="flex items-center gap-1">🏰 Start</span>
+        <span className="flex items-center gap-1">🔒 Door</span>
+        <span className="flex items-center gap-1">💎 Treasure</span>
+        <span className="flex items-center gap-1">👑 Vault</span>
+        <span className="flex items-center gap-1">🪨 Chamber</span>
+        <span className="flex items-center gap-1">🔥❄️⚡ Shrines</span>
       </div>
     </div>
   );
